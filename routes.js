@@ -6,7 +6,8 @@ const express = require('express');
 const router = express.Router();
 
 const { ObjectId, MongoClient } = require('mongodb');
-const { CONNECTION_STRING, DATABASE_NAME } = require('./config/mongoDB');
+
+const { CONNECTION_STRING, DATABASE_NAME } = process.env;
 
 var database, collection;
 
