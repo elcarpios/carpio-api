@@ -7,7 +7,7 @@ const router = express.Router();
 
 const { ObjectId, MongoClient } = require('mongodb');
 
-const { CONNECTION_STRING, DATABASE_NAME } = process.env;
+const { CONNECTION_STRING, DATABASE_NAME, API_KEY } = process.env;
 
 var database, collection;
 
@@ -38,6 +38,15 @@ router.get('/posts/:postId', (request, response) => {
         }
         response.send(result);
     });
+});
+
+router.post('/add', (request, response) => {
+	// collection.insertOne(request.body, (error, result) => {
+	// 	if(error) {
+    //         return response.status(500).send(error);
+    //     }
+    //     response.status(200).send(result);
+	// });
 });
 
 module.exports = { initRoutes, router };
