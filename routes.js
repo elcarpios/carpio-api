@@ -17,26 +17,30 @@ const initRoutes = () => {
             throw error;
         }
         database = client.db(DATABASE_NAME);
-        collection = database.collection("posts");
+        collection = database.collection('posts');
         console.log(WELCOME_MESSAGE);
     });
 };
 
 router.get('/', (request, response) => {
-    collection.find({}).toArray((error, result) => {
+    const query = { projection: { excerpt: 0 } };
+    collection.find({}, query).sort({ date: -1 }).toArray((error, result) => {
         if(error) {
             return response.status(500).send(error);
         }
-        response.send(result);
+        return response.send(result);
     });
 });
 
 router.get('/posts/:postId', (request, response) => {
-    collection.find(ObjectId(request.params.postId)).toArray((error, result) => {
+    const isDeepLinking = request.headers.deeplinking === 'true',
+        query = isDeepLinking ? {} : { projection: { excerpt: 1, _id: 0 } };
+
+    collection.find(ObjectId(request.params.postId), query).toArray((error, result) => {
         if(error) {
             return response.status(500).send(error);
         }
-        response.send(result);
+        return response.send(result);
     });
 });
 
